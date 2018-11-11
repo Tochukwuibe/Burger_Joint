@@ -1,0 +1,41 @@
+.Burger {
+    width: 100%;
+    margin: auto;
+    height:  300px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: grid;
+}
+
+.Burger div {
+    min-height: 90%;
+    align-self: center;
+}
+
+
+.Empty {
+    display: grid;
+    align-items: center;
+}
+
+
+
+@media (min-width: 576px  ) {
+    .Burger {
+        width: 450px;
+    }
+}
+
+
+
+@media (min-width: 992px){
+    .Burger {
+        width: 500px;
+    }
+}
+
+
+
+
+

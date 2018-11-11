@@ -1,0 +1,39 @@
+.SideDrawer {
+    position: fixed;
+    width: 200px;
+    max-width: 70%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    background-color: white;
+    padding: 32px 16px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+
+    display: grid;
+    grid-template: .3fr 1fr / 1fr;
+}
+
+.Logo {
+    max-height: 40px;
+    width: 100%;
+}
+
+.SideDrawer nav {
+    max-height: 40%;
+}
+
+@media(min-width: 500px) {
+    .SideDrawer{
+        display: none;
+    }
+}
+
+.Open {
+    transform: translateX(0);
+}
+
+.Closed {
+    transform: translateX(-100%);
+}

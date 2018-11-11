@@ -1,0 +1,18 @@
+.Items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+   
+    height: 100%;
+}
+
+.Row {
+    display: grid;
+    align-items: center;
+}
+
+.Col {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}

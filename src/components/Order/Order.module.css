@@ -1,0 +1,51 @@
+.Order {
+    width: 100%;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px auto;
+}
+
+.Ingredients {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.Label {
+    font-weight: bold;
+    align-self: center;
+}
+
+.Chip {
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+    height: 20px;
+    width: auto;
+    background-color: #cf8f2e;
+    text-align: center;
+    max-width: 100px;
+    padding: 5px;
+    justify-self: center;
+    box-shadow: 0 2px 3px #ccc;
+    color: white;
+    cursor: pointer;
+    
+}
+
+.Chip:hover {
+    animation: chipRise;
+    animation-duration: .3s;
+    box-shadow: 2px 8px 3px #ccc
+}
+
+
+@keyframes chipRise {
+    from {
+        box-shadow: 0 2px 3px #ccc;
+    }
+
+    to {
+        box-shadow: 2px 8px 3px #ccc
+    }
+};

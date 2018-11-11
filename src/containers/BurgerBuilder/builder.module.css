@@ -1,0 +1,15 @@
+.Builder {
+    /* display: grid;
+    height: 100%;
+    grid-row-gap: 7%; */
+    height: 100%;
+}
+
+.BurgerContainer {
+    align-self: center;
+    height: 20%;
+}
+
+.ControlsContainer {
+
+}

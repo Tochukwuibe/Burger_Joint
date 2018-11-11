@@ -1,0 +1,17 @@
+.Logo {
+    background-color: white;
+    /* padding: 8px;  */
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+}
+
+.ImgContainer {
+    display: grid;
+    align-items: center;
+}
+
+.Image {
+    max-height: 80%;
+}

@@ -1,0 +1,24 @@
+.Summary {
+    text-align: center;
+    width: 80%; 
+    margin: auto;
+    display: grid;
+    grid-template: .2fr auto, .2fr / 1fr;
+    justify-items: center;
+}
+
+.Burger {
+    height: auto;
+    width: 100%
+}
+
+
+@media (min-width: 600px) {
+    .Summary {
+        width: 500px;
+    }
+
+    .Burger{
+        max-height: 300px;
+    }
+}

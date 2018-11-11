@@ -1,0 +1,40 @@
+.Toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #703b09;
+    display: grid;
+    grid-template: 1fr / repeat(3, 1fr);
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 90;
+    max-height: 56px;
+
+}
+
+.Toolbar nav {
+    height: 100%;
+    width: 60%;
+    justify-self: end;
+}
+
+.LogoContainer {
+    height: 80%;
+    width: 80px;
+    padding: 3px;
+    justify-self: center;
+}
+
+
+@media(max-width: 500px) {
+    .Toolbar nav{
+        display: none;
+    }
+
+    .LogoContainer {
+        grid-column: 3 / -1
+    }
+}
