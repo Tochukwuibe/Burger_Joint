@@ -1,26 +1,38 @@
 import * as React from 'react';
-import  styles from './input.module.css';
+import styles from './input.module.css';
 
-export const Input = ({ inputType, config, change }) => {
+export const Input = (props) => {
+    const { change, config, inputType } = props;
+    const { value, label, placeholder } = config
+
+
+
     let inputElement: any = null;
+    const inputClasses = [styles.InputElement];
 
-    
+    if (props.invalid) { inputClasses.push(styles.Invalid); }
+
+    const onInputChange = ({ target }) => {
+        return change(target.value)
+    }
+
+
     switch (inputType) {
         case 'input': {
-            inputElement = <input onChange={change} className={styles.InputElement} {...config} />;
+            inputElement = <input onChange={onInputChange} value={value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} />;
             break;
         }
         case 'textArea': {
-            inputElement = <textarea onChange={change} className={styles.InputElement} {...config} />;
+            inputElement = <textarea onChange={onInputChange} value={value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} />;
             break;
         }
 
         case 'select': {
-            const { options } = config;
-            inputElement = <select onChange={change} className={styles.InputElement} {...config} >
+            const { options } = config
+            inputElement = <select onChange={onInputChange} value={value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} >
                 {
                     options.map((option, i) => <option key={i} value={option.value}>
-                            {option.display}
+                        {option.display}
                     </option>)
                 }
             </select>;
@@ -28,22 +40,25 @@ export const Input = ({ inputType, config, change }) => {
         }
 
         default: {
-            inputElement = <input onChange={change} className={styles.InputElement} {...config} />;
+            inputElement = <input onChange={onInputChange} value={value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} />;
         }
     }
 
 
     return (
-        <div onChange={change} className={styles.Input}>
-            <label>{config.label}</label>
+        <div className={styles.Input}>
+            <label>{label}</label>
             {inputElement}
         </div>
     );
 };
 
-export function formControl(type: string, config: {}) {
+export function formControl(control: { type: string, config: any, onChange: Function, validation?: any }) {
     return {
-        inputType: type,
-        config
+        inputType: control.type,
+        config: control.config,
+        change: control.onChange(control.config.name),
+        valid: !(!!control.validation),
+        validation: control.validation
     };
 }
