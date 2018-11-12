@@ -9,7 +9,7 @@ import styles from './contactData.module.css';
 
 export class ContactData extends React.Component<any> {
 
-    public state: { form: any, loading: boolean };
+    public state: { form: any, loading: boolean, formIsValid: boolean };
     private router: RouteComponentProps;
 
 
@@ -18,6 +18,7 @@ export class ContactData extends React.Component<any> {
         this.state = {
             form: this.initializeForm(),
             loading: false,
+            formIsValid: false
         };
         const { match, history, location } = this.props;
         this.router = { match, history, location };
@@ -35,13 +36,20 @@ export class ContactData extends React.Component<any> {
     }
 
     public onFormInputChanged = (controlName) => {
-        return (value) => {
+        return (value, valid) => {
             const newForm = { ...this.state.form };
             const newControl = { ...newForm[controlName] }
             newControl.config.value = value;
-            newControl.valid = this.checkValidity(value, newControl.validation);
+            newControl.valid = valid;
+            newControl.touched= true;
             newForm[controlName] = newControl;
-            this.setState({ form: newForm })
+
+            let formIsValid = true;
+            for (let key in newForm) {
+                formIsValid = newForm[key].valid && formIsValid;
+            }
+
+            this.setState({ form: newForm, formIsValid })
         };
     }
 
@@ -64,11 +72,12 @@ export class ContactData extends React.Component<any> {
 
 
     private renderView(): React.ReactNode {
+        console.log('the disabled value ', this.state.formIsValid)
         return this.state.loading ?
             <Spinner /> :
             <form onSubmit={this.onSubmit}>
                 {this.renderInputs(this.state.form)}
-                <Button type="submit" btnType="Success">Order</Button>
+                <Button disabled={!this.state.formIsValid} type="submit" btnType="Success">Order</Button>
             </form>;
     }
 
@@ -86,23 +95,7 @@ export class ContactData extends React.Component<any> {
     }
 
 
-    private checkValidity(value, rules) {
-        let isValid = true ;
-        
-        if(rules.required) {
-            isValid = value.trim() !=='' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-
-        return isValid;
-    }
+   
 
 
 
@@ -115,8 +108,11 @@ export class ContactData extends React.Component<any> {
                 key={index}
                 inputType={control.inputType}
                 config={control.config}
+                valid={control.valid}
+                validation={control.validation}
+                touched={control.touched}
                 change={this.onFormInputChanged(control.key)
-                } />);
+                }/>);
     }
 
 
@@ -164,9 +160,6 @@ export class ContactData extends React.Component<any> {
                         { value: 'express', display: 'Express' },
                         { value: 'basic', display: 'basic' }
                     ]
-                },
-                validation: {
-                    required: true
                 }
             })
         }

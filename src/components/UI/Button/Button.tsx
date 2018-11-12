@@ -3,9 +3,10 @@ import styles from './button.module.css';
 
 export default ({ children, clicked, btnType, disabled, type }: any) => {
 
+    console.log('the btn disabled ', disabled);
     const classes = [styles.Button, styles[btnType]].join(' ');
 
     return (
-        <button type={type} disabled={disabled} onClick={clicked} className={classes} >{children}</button>
+        <button  type={type} disabled={disabled} onClick={clicked} className={classes} >{children}</button>
     );
 };

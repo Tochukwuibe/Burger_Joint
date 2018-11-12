@@ -2,18 +2,21 @@ import * as React from 'react';
 import styles from './input.module.css';
 
 export const Input = (props) => {
-    const { change, config, inputType } = props;
+    const { change, config, inputType, valid, validation, touched } = props;
     const { value, label, placeholder } = config
-
-
 
     let inputElement: any = null;
     const inputClasses = [styles.InputElement];
 
-    if (props.invalid) { inputClasses.push(styles.Invalid); }
+
+    console.log('the valid and validation ', { valid, validation, touched })
+    if (!valid && validation && touched) {
+        inputClasses.push(styles.Invalid);
+    }
 
     const onInputChange = ({ target }) => {
-        return change(target.value)
+        const isvalid = checkValidity(value, validation, touched)
+        return change(target.value, isvalid)
     }
 
 
@@ -29,7 +32,7 @@ export const Input = (props) => {
 
         case 'select': {
             const { options } = config
-            inputElement = <select onChange={onInputChange} value={value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} >
+            inputElement = <select onChange={onInputChange} value={options[0].value} className={inputClasses.join(' ')} name={name} placeholder={placeholder} >
                 {
                     options.map((option, i) => <option key={i} value={option.value}>
                         {option.display}
@@ -53,12 +56,35 @@ export const Input = (props) => {
     );
 };
 
+
+function checkValidity(value, rules, touched) {
+    let isValid = true;
+
+    if (!rules) { return true }
+    if (!touched) { return true }
+
+    if (rules.required) {
+        isValid = value.trim() !== '' && isValid;
+    }
+    if (rules.minLength) {
+        isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+        isValid = value.length <= rules.maxLength && isValid;
+    }
+    return isValid;
+}
+
+
+
+
 export function formControl(control: { type: string, config: any, onChange: Function, validation?: any }) {
     return {
         inputType: control.type,
         config: control.config,
         change: control.onChange(control.config.name),
-        valid: !(!!control.validation),
-        validation: control.validation
+        valid: !(!!control.validation) || !(!!control.validation),
+        validation: control.validation,
+        touched: false
     };
 }
