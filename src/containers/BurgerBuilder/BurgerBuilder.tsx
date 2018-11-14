@@ -2,21 +2,16 @@ import * as React from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { Modal } from '../../components/UI/Modal/Modal';
-import { OrderSummary } from '../../components/Burger/OrderSummary/OrderSummary';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import { orders } from '../../http/http';
 import { Spinner } from '../../components/UI/Spinner/Spinner';
 import { withErrorHandler } from '../../hoc/withErrorHandler/WithErrorHandler';
 import { RouteComponentProps } from 'react-router';
-import  styles from'./builder.module.css';
+import styles from './builder.module.css';
+import connect from '../../store/reducers/BurgerBuilder/index';
 
 
 
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    bacon: 3
-};
 
 class BurgerBuilder extends React.Component {
     private standardPrice = 4;
@@ -28,8 +23,6 @@ class BurgerBuilder extends React.Component {
         super(props);
 
         this.state = {
-            ingredients: null,
-            price: this.standardPrice,
             checkout: false,
             loading: false,
             error: false
@@ -49,25 +42,13 @@ class BurgerBuilder extends React.Component {
 
 
     public addIngredient = (type: string) => {
-
-        let newCnt = this.state.ingredients![type] + 1;
-        newCnt = newCnt > 0 ? newCnt : 0;
-        const ingredients = { ...(this.state.ingredients || {}), [type]: newCnt };
-        const price = this.getPrice(ingredients) + this.standardPrice;
-        this.setState({ ingredients, price });
-
+        this.props.addIngredient(type)
     }
 
     public removeIngredient = (type: string) => {
-
-        let newCnt = this.state.ingredients![type] - 1;
-        newCnt = newCnt > 0 ? newCnt : 0;
-        const ingredients = { ...(this.state.ingredients || {}), [type]: newCnt };
-
-        const price = this.getPrice(ingredients) + this.standardPrice;
-        this.setState({ ingredients, price });
-
+        this.props.removeIngredient(type)
     }
+
 
     public onCheckout = (state: boolean) => {
         return () => this.setState({ checkout: state });
@@ -95,7 +76,7 @@ class BurgerBuilder extends React.Component {
 
             const res = await orders.get('/ingredients.json');
             console.log('the ingredients res ', res);
-            this.setState({ ingredients: res.data });
+            this.props.addIngredients(res.data)
         } catch (error) {
             console.log('the error');
             this.setState({ error: true });
@@ -105,8 +86,8 @@ class BurgerBuilder extends React.Component {
 
 
     public render() {
-
-        let content: any = this.state.ingredients ? this.renderView() : this.showLoader();
+        // console.log('the props in builder ', this.props);
+        let content: any = this.props.ingredients ? this.renderView() : this.showLoader();
 
         if (this.state.error) { content = <p>Ingredints cannot be loaded</p>; }
 
@@ -119,14 +100,15 @@ class BurgerBuilder extends React.Component {
             <div className={styles.Builder}>
                 {this.getModal()}
                 <div className={styles.BurgerContainer}>
-                    <Burger ingredients={this.state.ingredients!} />
+                    <Burger ingredients={this.props.currentIngredients} />
                 </div>
                 <div className={styles.ControlsContainer}>
                     <BuildControls
-                        ingredients={this.state.ingredients!}
+                        ingredients={this.props.ingredients}
                         addIngredient={this.addIngredient}
                         removeIngredient={this.removeIngredient}
-                        price={this.state.price}
+                        currentIngredients={this.props.currentIngredients}
+                        price={this.props.price}
                         checkout={this.onCheckout(true)}
                     />
                 </div>
@@ -153,12 +135,7 @@ class BurgerBuilder extends React.Component {
     }
 
 
-    private getPrice(ingredients: { [key: string]: number }) {
-        return Object.keys(ingredients).map(key => {
-            return ingredients[key] * INGREDIENT_PRICES[key];
-        })
-            .reduce((acc, curr) => acc + curr, 0);
-    }
+
 
 
     private getModal(): JSX.Element {
@@ -177,17 +154,16 @@ class BurgerBuilder extends React.Component {
         return <OrderSummary
             finish={this.onCompleteCheckout}
             cancel={this.onCheckout(false)}
-            ingredients={this.state.ingredients}
-            price={this.state.price}
+            ingredients={this.props.ingredients}
+            price={this.props.price}
         />;
     }
 
 
     private renderSpinner() {
-        console.log('rendering spinner');
         return <Spinner />;
     }
 }
 
 
-export default withErrorHandler(BurgerBuilder, orders);
+export default connect(withErrorHandler(BurgerBuilder, orders));

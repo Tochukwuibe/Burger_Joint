@@ -12,7 +12,7 @@ let controls = [
 
 
 
-export default ({ addIngredient, removeIngredient, ingredients, price, checkout }: any) => {
+export default ({ addIngredient, removeIngredient, currentIngredients, ingredients, price, checkout }: any) => {
 
     function more(type: string) {
         return () => addIngredient(type);
@@ -23,14 +23,15 @@ export default ({ addIngredient, removeIngredient, ingredients, price, checkout 
     }
 
     controls = controls.map((control) => {
-        return { ...control, amt: ingredients[control.type] };
+        const amt = currentIngredients ? currentIngredients[control.type] || 0 : 0
+        return { ...control, amt };
     });
 
     const isEmpty = controls.reduce((acc, curr) => acc + curr.amt, 0) <= 0;
 
 
     return (<div className={styles.BuildControls}>
-        <p className={styles.Price}>Total: <strong>${ Math.round(price * 100) / 100}</strong> </p>
+        <p className={styles.Price}>Total: <strong>${Math.round(price * 100) / 100}</strong> </p>
         {controls.map(cont => < BuildControl
             more={more(cont.type)}
             less={less(cont.type)}

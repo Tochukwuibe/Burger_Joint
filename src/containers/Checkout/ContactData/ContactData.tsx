@@ -5,9 +5,10 @@ import { RouteComponentProps } from 'react-router';
 import { Spinner } from '../../../components/UI/Spinner/Spinner';
 import { Input, formControl } from '../../../components/UI/FormControls/Input/input';
 import styles from './contactData.module.css';
+import connect from '../../../store/reducers/BurgerBuilder/index';
 
 
-export class ContactData extends React.Component<any> {
+export default connect (class ContactData extends React.Component<any> {
 
     public state: { form: any, loading: boolean, formIsValid: boolean };
     private router: RouteComponentProps;
@@ -83,7 +84,7 @@ export class ContactData extends React.Component<any> {
 
     private createOrder() {
         return {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.currentIngredients,
             price: this.props.price,
             customer: {
                 name: this.state.form.name.config.value,
@@ -96,8 +97,6 @@ export class ContactData extends React.Component<any> {
 
 
    
-
-
 
     private renderInputs(form) {
 
@@ -167,5 +166,5 @@ export class ContactData extends React.Component<any> {
 
 
 
-}
+})
 
