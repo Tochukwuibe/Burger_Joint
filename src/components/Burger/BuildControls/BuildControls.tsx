@@ -31,7 +31,7 @@ export default ({ addIngredient, removeIngredient, currentIngredients, ingredien
 
 
     return (<div className={styles.BuildControls}>
-        <p className={styles.Price}>Total: <strong>${Math.round(price * 100) / 100}</strong> </p>
+        <p className={styles.Price}>Total: <strong>${price.toFixed(2)}</strong> </p>
         {controls.map(cont => < BuildControl
             more={more(cont.type)}
             less={less(cont.type)}

@@ -1,4 +1,4 @@
-import { BuilderActionTypes } from '../../actions/builder.actions';
+import { BuilderActionTypes } from '../../actions/builder';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -11,6 +11,8 @@ const initialState = {
     ingredients: null,
     currentIngredients: null,
     price: 4,
+    loading: false,
+    error: false
 }
 
 export default (state = initialState, action) => {
@@ -20,6 +22,7 @@ export default (state = initialState, action) => {
         case BuilderActionTypes.ADD_INGREDIENTS: {
             return { ...state, ingredients: action.payload }
         }
+
         case BuilderActionTypes.ADD_INGREDIENT: {
             const currentIngredients = { ...(state.currentIngredients || {}) }
             const currentCount = currentIngredients[action.payload] ? currentIngredients[action.payload] : 0;
@@ -45,6 +48,18 @@ export default (state = initialState, action) => {
 
             console.log('the state after add ', { ...state, currentIngredients, price })
             return { ...state, currentIngredients, price }
+        }
+
+        case BuilderActionTypes.RESET_ORDER: {
+            return {...state, ...initialState, ingredients: state.ingredients}
+        }
+
+
+        case BuilderActionTypes.MANAGEUI: {
+            return {
+                ...state,
+                ...action.payload
+            }
         }
 
 

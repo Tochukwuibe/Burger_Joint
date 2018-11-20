@@ -1,90 +1,73 @@
 import * as React from 'react';
 import Button from '../../../components/UI/Button/Button';
 import { orders } from '../../../http/http';
-import { RouteComponentProps } from 'react-router';
+import { Redirect } from 'react-router';
 import { Spinner } from '../../../components/UI/Spinner/Spinner';
 import { Input, formControl } from '../../../components/UI/FormControls/Input/input';
 import styles from './contactData.module.css';
-import connect from '../../../store/reducers/BurgerBuilder/index';
+import connect from '../../../store/reducers/Checkout/index';
+import { withErrorHandler } from '../../../hoc/withErrorHandler/WithErrorHandler';
 
 
-export default connect (class ContactData extends React.Component<any> {
+export default withErrorHandler(connect(class ContactData extends React.Component<any> {
 
-    public state: { form: any, loading: boolean, formIsValid: boolean };
-    private router: RouteComponentProps;
-
-
+    public state: { form: any, formIsValid: boolean };
+ 
     constructor(props) {
         super(props);
-        this.state = {
-            form: this.initializeForm(),
-            loading: false,
-            formIsValid: false
-        };
-        const { match, history, location } = this.props;
-        this.router = { match, history, location };
+        this.state = { form: this.initializeForm(), formIsValid: false };
     }
 
 
-    public render() {
-        return (
-            <div className={styles.ContactData}>
-                <h4>Enter Your Contact Data</h4>
-                {this.renderView()}
+    public render = () => this.renderView();
 
-            </div>
-        );
-    }
 
-    public onFormInputChanged = (controlName) => {
-        return (value, valid) => {
-            const newForm = { ...this.state.form };
-            const newControl = { ...newForm[controlName] }
-            newControl.config.value = value;
-            newControl.valid = valid;
-            newControl.touched= true;
-            newForm[controlName] = newControl;
 
-            let formIsValid = true;
-            for (let key in newForm) {
-                formIsValid = newForm[key].valid && formIsValid;
-            }
-
-            this.setState({ form: newForm, formIsValid })
-        };
-    }
 
 
     private onSubmit = async (e) => {
         e.preventDefault();
-        try {
-
-            console.log('the form ', this.state.form);
-            // this.setState({ loading: true });
-            // await orders.post('/orders.json', this.createOrder());
-            // this.setState({ loading: false });
-            // this.router.history.replace('/checkout/user-info');
-
-        } catch (err) {
-            console.log('the error ', err);
-            this.setState({ loading: false });
-        }
+        this.props.makeOrder(this.createOrder());
     }
 
 
-    private renderView(): React.ReactNode {
-        console.log('the disabled value ', this.state.formIsValid)
-        return this.state.loading ?
+    private onFormInputChanged = (controlName) => {
+        return (value, valid) => {
+            const newForm = { ...this.state.form };
+            const newControl = { ...newForm[controlName] };
+            newControl.config.value = value;
+            newControl.valid = valid;
+            newControl.touched = true;
+            newForm[controlName] = newControl;
+            let formIsValid = true;
+            for (let key in newForm) {
+                formIsValid = newForm[key].valid && formIsValid;
+            }
+            this.setState({ form: newForm, formIsValid });
+        };
+    }
+
+    private renderView() {
+        return (<div className={styles.ContactData}>
+            <h4>Enter Your Contact Data</h4>
+            {this.renderForm()}
+
+        </div>);
+    }
+
+    private renderForm(): React.ReactNode {
+        return this.props.loading ?
             <Spinner /> :
             <form onSubmit={this.onSubmit}>
                 {this.renderInputs(this.state.form)}
                 <Button disabled={!this.state.formIsValid} type="submit" btnType="Success">Order</Button>
+                {this.props.complete ? <Redirect to="/orders" /> : null}
             </form>;
     }
 
     private createOrder() {
         return {
-            ingredients: this.props.currentIngredients,
+            ingredients: this.props.ingredients,
             price: this.props.price,
             customer: {
                 name: this.state.form.name.config.value,
@@ -95,8 +78,6 @@ export default connect (class ContactData extends React.Component<any> {
         };
     }
 
-
-   
 
     private renderInputs(form) {
 
@@ -111,7 +92,7 @@ export default connect (class ContactData extends React.Component<any> {
                 validation={control.validation}
                 touched={control.touched}
                 change={this.onFormInputChanged(control.key)
-                }/>);
+                } />);
     }
 
 
@@ -166,5 +147,5 @@ export default connect (class ContactData extends React.Component<any> {
 
 
 
-})
+}), orders)
 

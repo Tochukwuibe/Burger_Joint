@@ -1,22 +1,26 @@
 import { connect } from 'react-redux';
-import { BuilderActions } from '../../actions/builder.actions'
+import { BuilderActions } from '../../actions/builder'
+import { CheckoutActions } from '../../actions/checkout';
 
 
-// @ts-ignore
+
 const stateToProps = ({ builder }) => {
-    const { ingredients, price, currentIngredients } = builder;
+    const { ingredients, price, currentIngredients, loading, error } = builder;
     return {
         ingredients,
         price,
-        currentIngredients
+        currentIngredients,
+        loading,
+        error
     }
 }
 
 const actionsToProps = (dispatch) => {
     return {
-        addIngredients: (ingredients) => dispatch(BuilderActions.AddIngredients(ingredients)),
+        fetchIngredients: () => dispatch(BuilderActions.fetchIngredients()),
         addIngredient: (key) => dispatch(BuilderActions.AddIngredient(key)),
         removeIngredient: (key) => dispatch(BuilderActions.RemoveIngredient(key)),
+        initCheckout: () => dispatch(CheckoutActions.initCheckout())
     }
 }
 

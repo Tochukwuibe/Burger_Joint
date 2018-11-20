@@ -3,7 +3,9 @@ import { RouteComponentProps } from 'react-router';
 import { Order } from '../../components/Order/Order';
 import { orders } from '../../http/http';
 import { withErrorHandler } from '../../hoc/withErrorHandler/WithErrorHandler';
-import  styles from './Orders.module.css';
+import styles from './Orders.module.css';
+import connect from '../../store/reducers/Orders/index';
+import { Spinner } from '../../components/UI/Spinner/Spinner';
 
 
 class OrdersClass extends React.Component<any> {
@@ -19,41 +21,28 @@ class OrdersClass extends React.Component<any> {
     }
 
 
-    public componentDidMount = async () => {
-        try {
-            this.setState({ loading: true });
-            const res = await orders.get('/orders.json');
-            console.log('the orders data ', res.data);
-            this.setState({ orders: this.mapArrayFormDatabase(res.data), loading: false });
-
-        } catch (e) {
-            this.setState({ loading: false });
-        }
-    }
+    public componentDidMount = () => this.props.fetchOrders();
+    public render = () => this.renderView();
 
 
-    public render() {
+
+ 
+
+
+    private renderView() {
         return (
             <div className={styles.Orders}>
-                {this.renderOrders()}
+                {!this.props.loading ? this.renderOrders() : <Spinner />}
             </div>
-
         );
     }
 
-
     private renderOrders() {
-        return this.state.orders.map((order: any, index) => {
-            return <Order key={order.key} order={order} />;
-        });
-    }
-
-    private mapArrayFormDatabase(data: {}) {
-        return Object.keys(data).map((key) => {
-            return { key, ...data[key] };
+        return this.props.orders.map((order: any, index) => {
+            return <Order key={order.id} order={order} />;
         });
     }
 }
 
 
-export const Orders = withErrorHandler(OrdersClass, orders);
+export const Orders = withErrorHandler(connect(OrdersClass), orders);

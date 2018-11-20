@@ -10,7 +10,6 @@ export default connect(class OrderSummary extends React.Component<any> {
 
 
     public componentWillUpdate(nextProps, nextState) {
-        console.log('order summary will update');
     }
 
 
@@ -27,7 +26,6 @@ export default connect(class OrderSummary extends React.Component<any> {
 
     public render() {
         const props = this.props;
-        console.log('the props in summary ', props);
         const { currentIngredients, finish, cancel, price }: any = props;
 
         const btnStyle = {

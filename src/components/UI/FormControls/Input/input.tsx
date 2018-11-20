@@ -8,8 +8,6 @@ export const Input = (props) => {
     let inputElement: any = null;
     const inputClasses = [styles.InputElement];
 
-
-    console.log('the valid and validation ', { valid, validation, touched })
     if (!valid && validation && touched) {
         inputClasses.push(styles.Invalid);
     }
