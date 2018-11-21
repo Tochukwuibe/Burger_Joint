@@ -40,6 +40,7 @@ class BurgerBuilder extends React.Component {
             this.router.history.push('/auth');
         }
         
+        
     };
     private onCompleteCheckout = () => { this.props.initCheckout(); this.router.history.push({ pathname: '/checkout' }); }
 
