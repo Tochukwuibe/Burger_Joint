@@ -50,6 +50,7 @@ export default (state = initialState, action) => {
             return { ...state, currentIngredients, price }
         }
 
+        
         case BuilderActionTypes.RESET_ORDER: {
             return {...state, ...initialState, ingredients: state.ingredients}
         }

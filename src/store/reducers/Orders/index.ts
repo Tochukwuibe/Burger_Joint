@@ -6,15 +6,18 @@ import { connect } from 'react-redux';
 
 const stateToProps = (store) => {
     const { orders, loading,  } = store.orders;
+    const {authData, authenticated} = store.auth;
     return {
         orders,
         loading,
+        token: authData.idToken,
+        authenticated
     }
 }
 
 const actionsToProps = (dispatch) => {
     return {
-        fetchOrders: () => dispatch(OrderActions.fetchOrders()),
+        fetchOrders: (token) => dispatch(OrderActions.fetchOrders(token)),
     }
 }
 

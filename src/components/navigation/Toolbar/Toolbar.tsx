@@ -3,7 +3,7 @@ import Logo from '../../Logo/Logo';
 import Navitems from '../NavItems/Navitems';
 import styles from './toolbar.module.css';
 
-export default ({ open }: any) => {
+export default ({ open, authenticated }: any) => {
 
     return (
         <header className={styles.Toolbar}>
@@ -12,7 +12,7 @@ export default ({ open }: any) => {
                 <Logo />
             </div>
             <nav>
-                <Navitems/>
+                <Navitems authenticated={authenticated}/>
             </nav>
         </header>
     );

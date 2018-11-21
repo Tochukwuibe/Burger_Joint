@@ -12,7 +12,7 @@ let controls = [
 
 
 
-export default ({ addIngredient, removeIngredient, currentIngredients, ingredients, price, checkout }: any) => {
+export default ({ addIngredient, removeIngredient, currentIngredients, ingredients, price, checkout, isAuth }: any) => {
 
     function more(type: string) {
         return () => addIngredient(type);
@@ -29,7 +29,6 @@ export default ({ addIngredient, removeIngredient, currentIngredients, ingredien
 
     const isEmpty = controls.reduce((acc, curr) => acc + curr.amt, 0) <= 0;
 
-
     return (<div className={styles.BuildControls}>
         <p className={styles.Price}>Total: <strong>${price.toFixed(2)}</strong> </p>
         {controls.map(cont => < BuildControl
@@ -40,7 +39,8 @@ export default ({ addIngredient, removeIngredient, currentIngredients, ingredien
             amount={cont.amt}
         />)}
 
-        <button disabled={isEmpty} onClick={checkout} className={styles.OrderButton}>ORDER NOW</button>
+        <button disabled={isEmpty} onClick={checkout} className={styles.OrderButton}> { isAuth ? 'ORDER NOW' : 'Sign In' }</button>
+
     </div>);
 };
 

@@ -2,8 +2,10 @@ import * as React from 'react';
 import Toolbar from '../../components/navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/navigation/SideDrawer/SideDrawer';
 import  styles from './layout.module.css';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-export default class extends React.Component {
+ class Layout  extends React.Component<any> {
 
     public state = {
         showSideNav: false
@@ -16,9 +18,10 @@ export default class extends React.Component {
 
 
     public render() {
+        console.log('the layout props ', this.props);
         return (<div className={styles.Container}>
-            <Toolbar open={this.setSidenav(true)} />
-            <SideDrawer show={this.state.showSideNav} close={this.setSidenav(false)} />
+            <Toolbar open={this.setSidenav(true)} authenticated={this.props.authenticated} />
+            <SideDrawer show={this.state.showSideNav} authenticated={this.props.authenticated} close={this.setSidenav(false)} />
             <main className={styles.Content}>
                 {this.props.children}
             </main>
@@ -27,5 +30,13 @@ export default class extends React.Component {
     }
 }
 
+const stateToProps = ({ auth }) => {
+    return {
+        authenticated: auth.authenticated
+    }
+}
 
+
+
+export default withRouter(connect(stateToProps, null)(Layout) as any);
 

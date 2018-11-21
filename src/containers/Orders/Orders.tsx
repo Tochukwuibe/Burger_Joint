@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, Redirect } from 'react-router';
 import { Order } from '../../components/Order/Order';
 import { orders } from '../../http/http';
 import { withErrorHandler } from '../../hoc/withErrorHandler/WithErrorHandler';
@@ -21,19 +21,28 @@ class OrdersClass extends React.Component<any> {
     }
 
 
-    public componentDidMount = () => this.props.fetchOrders();
+    public componentWillMount() {
+        console.log('the props in orders', this.props);
+        if (!this.props.authenticated) {
+            this.router.history.push('/builder');
+        }
+    }
+
+    public componentDidMount = () => this.props.fetchOrders(this.props.token);
     public render = () => this.renderView();
 
 
 
- 
+
 
 
     private renderView() {
         return (
             <div className={styles.Orders}>
+                {!this.props.authenticated ? <Redirect to="/builder" /> : null}
                 {!this.props.loading ? this.renderOrders() : <Spinner />}
             </div>
+
         );
     }
 

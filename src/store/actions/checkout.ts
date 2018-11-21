@@ -13,11 +13,11 @@ export const CheckoutActions = {
     manageUI: (data) => {
         return {type: CheckoutActionTypes.MANAGEUI, payload: data};
     },
-    make_Order: (order) => {
+    make_Order: (order, token) => {
         return async(dispatch) => {
             try {
                 dispatch(CheckoutActions.manageUI({loading: true}))
-                const res = await orders.post('/orders.json', order);
+                const res = await orders.post('/orders.json?auth=' + token, order);
                 console.log('the order response ', res.data);
 
                 dispatch(CheckoutActions.manageUI({loading: false, complete: true}));

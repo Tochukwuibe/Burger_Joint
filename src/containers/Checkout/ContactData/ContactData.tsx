@@ -27,7 +27,7 @@ export default withErrorHandler(connect(class ContactData extends React.Componen
 
     private onSubmit = async (e) => {
         e.preventDefault();
-        this.props.makeOrder(this.createOrder());
+        this.props.makeOrder(this.createOrder(), this.props.token);
     }
 
 

@@ -2,11 +2,11 @@ import * as React from 'react';
 import styles from './input.module.css';
 
 export const Input = (props) => {
-    const { change, config, inputType, valid, validation, touched } = props;
+    const { change, config, inputType, valid, validation, touched, className } = props;
     const { value, label, placeholder } = config
 
     let inputElement: any = null;
-    const inputClasses = [styles.InputElement];
+    const inputClasses = [styles.InputElement, className];
 
     if (!valid && validation && touched) {
         inputClasses.push(styles.Invalid);

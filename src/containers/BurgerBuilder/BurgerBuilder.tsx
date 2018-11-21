@@ -33,7 +33,14 @@ class BurgerBuilder extends React.Component {
 
     private addIngredient = (type: string) => this.props.addIngredient(type)
     private removeIngredient = (type: string) => this.props.removeIngredient(type)
-    private onCheckout = (state: boolean) => () => this.setState({ checkout: state });
+    private onCheckout = (state: boolean) => () => {
+        if(this.props.authenticated) {
+            this.setState({ checkout: state }) 
+        } else {
+            this.router.history.push('/auth');
+        }
+        
+    };
     private onCompleteCheckout = () => { this.props.initCheckout(); this.router.history.push({ pathname: '/checkout' }); }
 
 
@@ -61,6 +68,7 @@ class BurgerBuilder extends React.Component {
                         currentIngredients={this.props.currentIngredients}
                         price={this.props.price}
                         checkout={this.onCheckout(true)}
+                        isAuth={this.props.authenticated}
                     />
                 </div>
             </div>;

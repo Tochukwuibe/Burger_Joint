@@ -19,6 +19,11 @@
     color: #5C9210;
 }
 
+.Success:hover {
+    border: 1px solid #ccc;
+    background-color: rgba(144, 238, 144, 0.575)
+}
+
 .Danger {
     color: #944317;
 }

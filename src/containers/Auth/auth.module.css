@@ -1,0 +1,21 @@
+.FormCard {
+    border: 1px solid  #ccc;
+    box-shadow: 0 2px 3px #bbb;
+    border-bottom: #bbb;
+    max-width: 800px;
+    min-width: 400px;
+    width: 60%;
+    display: grid;
+    justify-items: center;
+}
+
+.Input {
+    min-width: 300px;
+    width: 80%
+}
+
+.Auth {
+    display: grid;
+    justify-items: center;
+    height: 100%;
+}

@@ -3,7 +3,10 @@ import { Route, Redirect, Switch, BrowserRouter } from 'react-router-dom';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout  from './containers/Checkout/Checkout';
 import Layout from './hoc/Layout/layout';
+import Auth  from './containers/Auth/auth';
 import { Orders } from './containers/Orders/Orders';
+import Logout from './containers/Logout/Logout';
+
 
 
 
@@ -19,6 +22,14 @@ const routes = [
     {
         path: '/orders',
         component: Orders
+    },
+    {
+        path: '/auth',
+        component: Auth
+    },
+    {
+        path: '/logout',
+        component: Logout
     }
 ];
 
@@ -26,6 +37,7 @@ const routes = [
 
 
 const renderNotFound = () => <h1>Page not found</h1>;
+
 
 
 const AppRouter = (props) => {

@@ -4,14 +4,15 @@ import { CheckoutActions } from '../../actions/checkout';
 
 
 
-const stateToProps = ({ builder }) => {
+const stateToProps = ({ builder, auth }) => {
     const { ingredients, price, currentIngredients, loading, error } = builder;
     return {
         ingredients,
         price,
         currentIngredients,
         loading,
-        error
+        error,
+        authenticated: auth.authenticated
     }
 }
 
