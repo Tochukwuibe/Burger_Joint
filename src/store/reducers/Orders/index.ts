@@ -5,19 +5,20 @@ import { connect } from 'react-redux';
 
 
 const stateToProps = (store) => {
-    const { orders, loading,  } = store.orders;
-    const {authData, authenticated} = store.auth;
+    const { orders, loading, } = store.orders;
+    const { authData, authenticated } = store.auth;
     return {
         orders,
         loading,
-        token: authData.idToken,
-        authenticated
+        token: !!authData ? authData.idToken : '',
+        authenticated,
+        userId: !!authData ? authData.localId : ''
     }
 }
 
 const actionsToProps = (dispatch) => {
     return {
-        fetchOrders: (token) => dispatch(OrderActions.fetchOrders(token)),
+        fetchOrders: (token, userId) => dispatch(OrderActions.fetchOrders(token, userId)),
     }
 }
 

@@ -28,7 +28,7 @@ class OrdersClass extends React.Component<any> {
         }
     }
 
-    public componentDidMount = () => this.props.fetchOrders(this.props.token);
+    public componentDidMount = () => this.props.fetchOrders(this.props.token, this.props.userId);
     public render = () => this.renderView();
 
 
@@ -54,4 +54,4 @@ class OrdersClass extends React.Component<any> {
 }
 
 
-export const Orders = withErrorHandler(connect(OrdersClass), orders);
+export default withErrorHandler(connect(OrdersClass), orders);

@@ -19,12 +19,12 @@ export const OrderActions = {
         return { type: OrderActionTypes.ADD_ORDER, payload: order }
     },
     // using a thunk antion creator
-    fetchOrders: (token) => {
+    fetchOrders: (token, userId) => {
         return async (dispatch) => {
             try {
 
                 dispatch(OrderActions.manageUI({ loading: true }));
-                const res = await orders.get('/orders.json?auth=' + token);
+                const res = await orders.get(`/orders/${userId}.json?auth=` + token);
                 dispatch(OrderActions.manageUI({ loading: false }));
                 dispatch(OrderActions.add_Orders(res.data));
 

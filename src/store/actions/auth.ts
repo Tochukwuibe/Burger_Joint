@@ -5,19 +5,25 @@ export enum AuthActionTypes {
     SIGN_UP = 'SIGN_UP',
     AUTHENTICATED = 'Authenticated',
     SIGN_OUT = 'SIGN_OUT',
-    MANAGEUI = 'MANAGEUI'
+    MANAGEUI = 'MANAGEUI',
+    SET_REDIRECT_PATH = 'SETREDIRECTPATH',
+    FETCH_AUTH_DATA = 'FETCH_AUTH_DATA'
 }
 
 
 export const AuthActions = {
     sign_in: (body) => {
-        console.log('the data ', body);
         return async (dispatch) => {
             try {
 
                 dispatch(AuthActions.manage_ui({ loading: true }));
                 const { data } = await auth.post('/verifyPassword', { ...body, returnSecureToken: true });
-                console.log('the auth res ', data);
+
+                const expirationData = new Date(new Date().getTime() + (data.expiresIn * 1000))
+                const token = JSON.stringify(data)
+                localStorage.setItem('authData', token);
+                localStorage.setItem('expiration', `${expirationData}`);
+
                 dispatch(AuthActions.authenticated(data));
                 dispatch(AuthActions.manage_ui({ loading: false, error: false }));
 
@@ -36,7 +42,12 @@ export const AuthActions = {
 
                 dispatch(AuthActions.manage_ui({ loading: true }));
                 const { data } = await auth.post('/signupNewUser', { ...body, returnSecureToken: true });
-                console.log('the auth res ', data);
+
+                const expirationData = new Date(new Date().getTime() * (data.expiresIn * 1000))
+                const token = JSON.stringify(data)
+                localStorage.setItem('authData', token);
+                localStorage.setItem('expiration', `${expirationData}`);
+
                 dispatch(AuthActions.authenticated(data));
                 dispatch(AuthActions.manage_ui({ loading: false }));
                 dispatch(AuthActions.checkAuthTimeOut(data.expiresIn))
@@ -48,14 +59,35 @@ export const AuthActions = {
 
         }
     },
+    fetchAuthData: () => {
+        return (dispatch) => {
+            const data = JSON.parse(localStorage.getItem('authData'));
+            // const exp = JSON.parse(localStorage.getItem('expiration'));
+            if(data) {
+                dispatch(AuthActions.authenticated(data));
+            } else {
+                dispatch(AuthActions.sign_out())
+            }
+        }
+    },
     authenticated: (data) => {
         return { type: AuthActionTypes.AUTHENTICATED, payload: data }
     },
     sign_out: () => {
-        return { type: AuthActionTypes.SIGN_OUT }
+
+        return (dispatch) => {
+
+            localStorage.removeItem('authData');
+            localStorage.removeItem('expiration');
+
+            dispatch({ type: AuthActionTypes.SIGN_OUT });
+        }
     },
     manage_ui: (data) => {
         return { type: AuthActionTypes.MANAGEUI, payload: data }
+    },
+    setRedirectPath: (path) => {
+        return { type: AuthActionTypes.SET_REDIRECT_PATH, payload: path };
     },
     checkAuthTimeOut: (expiration) => {
         return (dispatch) => {

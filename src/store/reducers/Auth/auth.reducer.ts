@@ -5,7 +5,8 @@ const initialState = {
     loading: false,
     error: null,
     authenticated: false,
-    authData: null
+    authData: null,
+    authRedirect: '/'
 }
 
 
@@ -23,6 +24,10 @@ export default (state = initialState, action) => {
 
         case AuthActionTypes.SIGN_OUT: {
             return initialState
+        }
+
+        case AuthActionTypes.SET_REDIRECT_PATH: {
+            return {...state, authRedirect: action.payload }
         }
 
 

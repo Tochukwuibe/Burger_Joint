@@ -17,6 +17,8 @@ export default connect(class Auth extends React.Component<any> {
     }
 
     public render = () => this.renderView();
+    public componentWillUnmount = () => this.props.resetAuthRedirect() 
+    
 
     private onSignUp = () => this.props.signUp(this.getData());
     private onSignIn = () => this.props.signIn(this.getData());
@@ -43,7 +45,7 @@ export default connect(class Auth extends React.Component<any> {
                         <Button clicked={this.onSignUp} btnType="Success" >SignUp</Button>
                         <Button clicked={this.onSignIn} btnType="Success" >SignIn</Button>
                     </div>
-                    {this.props.authenticated ? <Redirect to="/builder" />: null}
+                    {this.props.authenticated ? <Redirect to={this.props.authRedirect} />: null}
                 </div>
             </div>
         );

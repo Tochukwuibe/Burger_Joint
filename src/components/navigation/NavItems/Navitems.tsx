@@ -7,8 +7,8 @@ export default (props) => {
     const { row, authenticated } = props
     const classes = `${styles.Items} ${row ? styles.Row : styles.Col}`;
     return (
-        <ul className={classes}>
-            <NavItem exact={true} link='/builder'>Builder</NavItem>
+        <ul className={classes} onClick={props.close}>
+            <NavItem exact={true} link='/builder' >Builder</NavItem>
             {authenticated ? <NavItem link='/orders'>Orders</NavItem> : null}
             {!authenticated ? <NavItem link='/auth'>Login</NavItem> : <NavItem link='/logout'>Logout</NavItem>}
         </ul>

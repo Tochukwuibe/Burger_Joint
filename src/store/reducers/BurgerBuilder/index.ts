@@ -1,3 +1,4 @@
+import { AuthActions } from './../../actions/auth';
 import { connect } from 'react-redux';
 import { BuilderActions } from '../../actions/builder'
 import { CheckoutActions } from '../../actions/checkout';
@@ -21,7 +22,8 @@ const actionsToProps = (dispatch) => {
         fetchIngredients: () => dispatch(BuilderActions.fetchIngredients()),
         addIngredient: (key) => dispatch(BuilderActions.AddIngredient(key)),
         removeIngredient: (key) => dispatch(BuilderActions.RemoveIngredient(key)),
-        initCheckout: () => dispatch(CheckoutActions.initCheckout())
+        initCheckout: () => dispatch(CheckoutActions.initCheckout()),
+        setAuthRedirect: (path) => dispatch(AuthActions.setRedirectPath(path))
     }
 }
 

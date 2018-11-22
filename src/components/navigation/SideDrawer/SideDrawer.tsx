@@ -7,7 +7,7 @@ import  styles from './drawer.module.css';
 export default ({ show, close, authenticated }: any) => {
 
     const classes = `${styles.SideDrawer} ${show ? styles.Open : styles.Closed }`;
-    const props = {row: true, authenticated};
+    const props = {row: true, authenticated, close};
     return (
         <>
             <Backdrop clicked={close} show={show} />
@@ -17,7 +17,7 @@ export default ({ show, close, authenticated }: any) => {
                 </div>
 
                 <nav>
-                    <NavItems {...props} />
+                    <NavItems  {...props} />
                 </nav>
 
             </div>

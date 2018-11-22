@@ -4,12 +4,16 @@ import SideDrawer from '../../components/navigation/SideDrawer/SideDrawer';
 import  styles from './layout.module.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { AuthActions } from '../../store/actions/auth';
 
  class Layout  extends React.Component<any> {
 
     public state = {
         showSideNav: false
     };
+
+    public componentDidMount = () => this.props.fetchAuthData()
+    
 
 
     public setSidenav(val: boolean) {
@@ -36,7 +40,13 @@ const stateToProps = ({ auth }) => {
     }
 }
 
+const actionsToProps = (dispatch) => {
+    return {
+        fetchAuthData: () => dispatch(AuthActions.fetchAuthData())
+    }
+}
 
 
-export default withRouter(connect(stateToProps, null)(Layout) as any);
+
+export default withRouter(connect(stateToProps, actionsToProps)(Layout) as any);
 

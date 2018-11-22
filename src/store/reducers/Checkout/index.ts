@@ -12,13 +12,14 @@ const stateToProps = ({ builder, checkout, auth }) => {
         price,
         loading,
         complete,
-        token: auth.authData.idToken
+        token: auth.authData.idToken,
+        userId: auth.authData.localId
     }
 }
 
 const actionsToProps = (dispatch) => {
     return {
-        makeOrder: (order, token) => dispatch(CheckoutActions.make_Order(order, token))
+        makeOrder: (order, token, userId) => dispatch(CheckoutActions.make_Order(order, token, userId))
     }
 }
 
