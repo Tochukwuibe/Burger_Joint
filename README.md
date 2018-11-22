@@ -3,6 +3,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Description
 My first react appliction, it's simple and uses a lot of the basic concepts in react along with some other features including, CRUD (with the firebase realtime database), authentication, Redux, Axios and more. 
 
+Deoloyed here: https://firestore-84244.firebaseapp.com
+
 ### `clone`
 
 Run git clone https://github.com/Tochukwuibe/Burger_Joint.git
