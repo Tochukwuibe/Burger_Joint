@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AppRouter from './app-router';
 
-class App extends React.Component {
+export class App extends React.Component {
 
 
   public render() {

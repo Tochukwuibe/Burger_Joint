@@ -13,7 +13,7 @@ import connect from '../../store/reducers/BurgerBuilder/index';
 
 
 
-class BurgerBuilder extends React.Component {
+export class BurgerBuilder extends React.Component {
 
     private router: RouteComponentProps;
 
