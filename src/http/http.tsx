@@ -9,5 +9,5 @@ export const orders = axios.default.create({
 
 export const auth = axios.default.create({
     baseURL: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty',
-    params: {key: 'AIzaSyA798mO_IqbKHGY8xMtBpuuiADvM1dkvr4'}
+    params: {key: ''}
 })
